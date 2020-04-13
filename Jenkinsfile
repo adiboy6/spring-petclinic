@@ -29,7 +29,10 @@ pipeline{
             steps{
                 //deploy to petclinic-vm
                 withCredentials([usernamePassword(credentialsId:'79590f1b-45a9-4ed6-ad8f-ea87d033efe3', passwordVariable: 'PASSWORD', usernameVariable: 'SSH_CRED')]) {
-                    
+		    script{
+                        containers = sh(returnStdout: true, script: 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} /usr/bin/docker ps -aq').replaceAll("\n", " ")
+                    }
+                    sh ("sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker stop $containers")                    
                     sh 'sshpass -p ${PASSWORD} scp -r docker-compose.yml Dockerfile  wait-for-it.sh target/ ${SSH_CRED}:~/spring-petclinic/'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker build ~/spring-petclinic/ -t petclinic:v1"'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker tag petclinic:v1 dockerregistrycicd.azurecr.io/petclinic:v1"'
