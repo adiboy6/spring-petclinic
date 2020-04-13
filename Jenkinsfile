@@ -36,7 +36,6 @@ pipeline{
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker push dockerregistrycicd.azurecr.io/petclinic:v1"'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker rmi dockerregistrycicd.azurecr.io/petclinic:v1"'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker-compose -f spring-petclinic/docker-compose.yml up -d"'
-                    sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker-compose -f spring-petclinic/docker-compose.yml up -d"'
                 }
             }
         }
