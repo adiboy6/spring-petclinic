@@ -30,7 +30,7 @@ pipeline{
                 //deploy to petclinic-vm
                 withCredentials([usernamePassword(credentialsId:'79590f1b-45a9-4ed6-ad8f-ea87d033efe3', passwordVariable: 'PASSWORD', usernameVariable: 'SSH_CRED')]) {
 		    script{
-                        images = sh(returnStdout: true, script: 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker images -a -q').replaceAll("\n", " ")
+                        images = sh(returnStdout: true, script: 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} /usr/bin/docker images -aq').replaceAll("\n", " ")
                     }
                     sh ("sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker rmi $images")                    
                     sh 'sshpass -p ${PASSWORD} scp -r docker-compose.yml Dockerfile  wait-for-it.sh target/ ${SSH_CRED}:~/spring-petclinic/'
