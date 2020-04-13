@@ -32,7 +32,7 @@ pipeline{
 		    script{
                         images = sh(returnStdout: true, script: 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker images -a -q').replaceAll("\n", " ")
                     }
-                    sh ("sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker rmi $containers")                    
+                    sh ("sshpass -p ${PASSWORD} ssh ${SSH_CRED} docker rmi $images")                    
                     sh 'sshpass -p ${PASSWORD} scp -r docker-compose.yml Dockerfile  wait-for-it.sh target/ ${SSH_CRED}:~/spring-petclinic/'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker build ~/spring-petclinic/ -t petclinic:v1"'
                     sh 'sshpass -p ${PASSWORD} ssh ${SSH_CRED} "docker tag petclinic:v1 dockerregistrycicd.azurecr.io/petclinic:v1"'
