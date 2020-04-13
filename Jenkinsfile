@@ -3,7 +3,7 @@ pipeline{
     stages {
         stage('build') {
             steps{
-                sh './mvnw package'
+                sh './mvnw package -Dcheckstyle.skip'
             }
         }
         stage('release') {
