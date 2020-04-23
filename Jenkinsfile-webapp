@@ -1,5 +1,6 @@
+def image_version=${}
 pipeline{
-    agent any
+    agent {label 'slave_agent'}
     stages {
         
         stage('build') {
@@ -8,7 +9,7 @@ pipeline{
             }
         }
 
-        stage('deploy'){
+        stage('upload to ACR'){
             steps{
                 withCredentials([usernamePassword(credentialsId:'acr_creds', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh 'docker login myfirstprivateregistry.azurecr.io -u ${USERNAME} -p ${PASSWORD} '
