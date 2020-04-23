@@ -14,6 +14,7 @@ pipeline{
                 withCredentials([usernamePassword(credentialsId:'acr_creds', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh 'docker login myfirstprivateregistry.azurecr.io -u ${USERNAME} -p ${PASSWORD} '
                 }
+                sh "chmod 766 wait-for-it.sh"
                 sh "docker build . -t petclinic:${image_version}"
                 sh "docker tag petclinic:${image_version} myfirstprivateregistry.azurecr.io/petclinic:${image_version}"
                 sh "docker push myfirstprivateregistry.azurecr.io/petclinic:${image_version}"
