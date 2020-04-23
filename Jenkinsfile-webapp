@@ -23,7 +23,7 @@ pipeline{
 
         stage('deploy to webapp'){
             steps{
-                sh "sed -i 's/{image_name}/myfirstprivateregistry.azurecr.io/petclinic:${image_version}/g' docker-compose-webapp.yml"
+                sh "sed -i \"s/{image_name}/myfirstprivateregistry.azurecr.io/petclinic/\${image_version}/g\" docker-compose-webapp.yml"
                 withCredentials([azureServicePrincipal('d6cfe462-e4d5-4ddd-86e2-f70ec74c3f01	')]){
                     sh "az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID"
                 }
