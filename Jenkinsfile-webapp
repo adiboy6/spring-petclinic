@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+    stages {
+        stage('build') {
+            steps{
+                sh './mvnw package -Dcheckstyle.skip'
+            }
+        }
+        stage('deploy'){
+            steps{
+                withCredentials([usernamePassword(credentialsId:'acr_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh 'docker login myfirstprivateregistry.azurecr.io -u ${USERNAME} -p ${PASSWORD} '
+                }
+                sh 'docker build . -t petclinic:v4'
+                sh 'docker tag petclinic:v4 myfirstprivateregistry.azurecr.io/petclinic:v4'
+                sh 'docker push myfirstprivateregistry.azurecr.io/petclinic:v4'
+                sh 'docker rmi myfirstprivateregistry.azurecr.io/petclinic:v4'
+                }
+            }
+        }
+    }
+}
