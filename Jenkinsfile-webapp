@@ -1,11 +1,13 @@
 pipeline{
     agent any
     stages {
+        
         stage('build') {
             steps{
                 sh './mvnw package -Dcheckstyle.skip'
             }
         }
+
         stage('deploy'){
             steps{
                 withCredentials([usernamePassword(credentialsId:'acr_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
@@ -15,7 +17,6 @@ pipeline{
                 sh 'docker tag petclinic:v4 myfirstprivateregistry.azurecr.io/petclinic:v4'
                 sh 'docker push myfirstprivateregistry.azurecr.io/petclinic:v4'
                 sh 'docker rmi myfirstprivateregistry.azurecr.io/petclinic:v4'
-                }
             }
         }
     }
