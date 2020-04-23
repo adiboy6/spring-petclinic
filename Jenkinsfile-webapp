@@ -17,7 +17,7 @@ pipeline{
                 sh "docker build . -t petclinic:${image_version}"
                 sh "docker tag petclinic:${image_version} myfirstprivateregistry.azurecr.io/petclinic:${image_version}"
                 sh "docker push myfirstprivateregistry.azurecr.io/petclinic:${image_version}"
-                sh "docker rmi myfirstprivateregistry.azurecr.io/petclinic:${image_version}""
+                sh "docker rmi myfirstprivateregistry.azurecr.io/petclinic:${image_version}"
             }
         }
     }
