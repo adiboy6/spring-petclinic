@@ -1,4 +1,4 @@
-def image_version=${}
+def image_version="v${BUILD_NUMBER}"
 pipeline{
     agent {label 'slave_agent'}
     stages {
@@ -9,15 +9,15 @@ pipeline{
             }
         }
 
-        stage('upload to ACR'){
+        stage('upload image to ACR'){
             steps{
                 withCredentials([usernamePassword(credentialsId:'acr_creds', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh 'docker login myfirstprivateregistry.azurecr.io -u ${USERNAME} -p ${PASSWORD} '
                 }
-                sh 'docker build . -t petclinic:v4'
-                sh 'docker tag petclinic:v4 myfirstprivateregistry.azurecr.io/petclinic:v4'
-                sh 'docker push myfirstprivateregistry.azurecr.io/petclinic:v4'
-                sh 'docker rmi myfirstprivateregistry.azurecr.io/petclinic:v4'
+                sh 'docker build . -t petclinic:${image_version}'
+                sh 'docker tag petclinic:${image_version} myfirstprivateregistry.azurecr.io/petclinic:${image_version}'
+                sh 'docker push myfirstprivateregistry.azurecr.io/petclinic:${image_version}'
+                sh 'docker rmi myfirstprivateregistry.azurecr.io/petclinic:${image_version}'
             }
         }
     }
