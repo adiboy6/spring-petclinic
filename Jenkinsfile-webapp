@@ -10,7 +10,7 @@ pipeline{
 
         stage('deploy'){
             steps{
-                withCredentials([usernamePassword(credentialsId:'acr_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId:'acr_creds', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh 'docker login myfirstprivateregistry.azurecr.io -u ${USERNAME} -p ${PASSWORD} '
                 }
                 sh 'docker build . -t petclinic:v4'
