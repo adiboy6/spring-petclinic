@@ -15,22 +15,15 @@ spec:
     spec:
       containers:
       - name: petclinic
-        image: petclinic:latest
-        imagePullPolicy: Never
+        image: adiboy/petclinic:latest
         ports:
         - containerPort: 8080
           name: petclinic-port
         env:
         - name: SPRING_DATASOURCE_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql-user
+          value: "petclinic"
         - name: SPRING_DATASOURCE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql-password
+          value: "petclinic"
 ---
 apiVersion: v1
 kind: Service
