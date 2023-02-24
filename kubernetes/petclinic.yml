@@ -22,8 +22,16 @@ spec:
         env:
         - name: SPRING_DATASOURCE_USERNAME
           value: "petclinic"
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: mysql-secret
+          #     key: mysql-user
         - name: SPRING_DATASOURCE_PASSWORD
           value: "petclinic"
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: mysql-secret
+          #     key: mysql-password
 ---
 apiVersion: v1
 kind: Service

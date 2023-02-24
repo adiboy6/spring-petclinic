@@ -7,6 +7,7 @@ spec:
   - port: 3306
   selector:
     app: mysql
+  clusterIP: None
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,20 +25,22 @@ spec:
         app: mysql
     spec:
       containers:
-      - image: mysql:5.6
+      - image: mysql:5.7
         name: mysql
         env:
+        # will not have any affect unless the volume is re-created
         - name: MYSQL_USER
-          value: "petclinic"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
         - name: MYSQL_PASSWORD
-          value: "petclinic"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
         - name: MYSQL_DATABASE
           value: "petclinic"
-        - name: MYSQL_ROOT_PASSWORD
-          value: ""
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: "true"
-        
         ports:
         - containerPort: 3306
           name: mysql
